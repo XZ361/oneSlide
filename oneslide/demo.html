@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>reveal.js – The HTML Presentation Framework</title>
+
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/blood.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/monokai.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+</head>
+
+<body>
+
+    <div class="reveal">
+
+        <!-- Any section element inside of this container is displayed as a slide -->
+        <div class="slides">
+
+        </div>
+
+    </div>
+
+    <script src="js/reveal.js"></script>
+
+    <!-- <script>
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: true,
+            hash: true,
+
+            transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+            // More info https://github.com/hakimel/reveal.js#dependencies
+            dependencies: [{
+                src: 'plugin/markdown/marked.js',
+                condition: function() {
+                    return !!document.querySelector('[data-markdown]');
+                }
+            }, {
+                src: 'plugin/markdown/markdown.js',
+                condition: function() {
+                    return !!document.querySelector('[data-markdown]');
+                }
+            }, {
+                src: 'plugin/highlight/highlight.js'
+            }, {
+                src: 'plugin/search/search.js',
+                async: true
+            }, {
+                src: 'plugin/zoom-js/zoom.js',
+                async: true
+            }, {
+                src: 'plugin/notes/notes.js',
+                async: true
+            }]
+        });
+    </script> -->
+    <script>
+        const isMain = str => (/^#{1,2}(?!#)/).test(str)
+        const isSub = str => (/^#{3}(?!#)/).test(str)
+
+        function convert(raw) {
+            let arr = raw.split(/\n(?=\s*#)/).filter(s => s != '').map(s => s.trim())
+            html = ''
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i + 1] !== undefined) {
+                    if (isMain(arr[i]) && isMain(arr[i + 1])) {
+                        html += `
+							<section data-markdown>
+							<textarea data-template>
+								${arr[i]}
+							</textarea>
+						</section>
+							`
+                    } else if (isMain(arr[i]) && isSub(arr[i + 1])) {
+                        html += `
+						<section>
+								<section data-markdown>
+							<textarea data-template>
+								${arr[i]}
+							</textarea>
+						</section>
+						`
+                    } else if (isSub(arr[i]) && isSub(arr[i + 1])) {
+                        html += `
+							<section data-markdown>
+						<textarea data-template>
+							${arr[i]}
+						</textarea>
+					</section>
+							`
+                    } else if (isSub(arr[i]) && isMain(arr[i + 1])) {
+                        html += `
+							<section data-markdown>
+							<textarea data-template>
+								${arr[i]}
+							</textarea>
+						</section>
+					</section>
+							`
+                    }
+
+                } else {
+                    if (isMain(arr[i])) {
+                        html += `
+							<section data-markdown>
+						<textarea data-template>
+							${arr[i]}
+						</textarea>
+					</section>`
+                    } else if (isSub(arr[i])) {
+                        html += `
+							<section data-markdown>
+							<textarea data-template>
+								${arr[i]}
+							</textarea>
+						</section>
+					</section>
+							`
+                    }
+                }
+            }
+            return html
+        }
+
+        function loadMarkdown(raw) {
+            let html = convert(raw)
+            document.querySelector('.slides').innerHTML = html
+                // More info https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: true,
+                progress: true,
+                center: true,
+                hash: true,
+
+                transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+                // More info https://github.com/hakimel/reveal.js#dependencies
+                dependencies: [{
+                    src: 'plugin/markdown/marked.js',
+                    condition: function() {
+                        return !!document.querySelector('[data-markdown]');
+                    }
+                }, {
+                    src: 'plugin/markdown/markdown.js',
+                    condition: function() {
+                        return !!document.querySelector('[data-markdown]');
+                    }
+                }, {
+                    src: 'plugin/highlight/highlight.js'
+                }, {
+                    src: 'plugin/search/search.js',
+                    async: true
+                }, {
+                    src: 'plugin/zoom-js/zoom.js',
+                    async: true
+                }, {
+                    src: 'plugin/notes/notes.js',
+                    async: true
+                }]
+            });
+        }
+
+        function start() {
+            if (localStorage.markdown) {
+                loadMarkdown(localStorage.markdown)
+            } else {
+                loadMarkdown(`
+				# 欢迎来到Easy PPT
+				## 第一章
+				## 第二章
+				## 第三章
+				### 内容一
+				### 内容二
+				## 谢谢
+				`)
+            }
+        }
+    </script>
+
+</body>
+
+</html>
