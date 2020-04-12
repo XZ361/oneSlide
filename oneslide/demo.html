@@ -150,11 +150,31 @@
             }
             return html
         }
-
+        // 用户修改时，调用loadMarkdown函数
         function loadMarkdown(raw) {
-            let html = convert(raw)
-            document.querySelector('.slides').innerHTML = html
+            // 用户修改过后，修改后的内容保存在localStorage中
+            localStorage.markdown = raw
+                // 重新加载,之后调用start函数
+            location.reload()
                 // More info https://github.com/hakimel/reveal.js#configuration
+
+        }
+        // 页面加载时调用start函数
+        function start() {
+            // tpl是默认模板
+            let TPL = `
+				# 欢迎来到 oneSlide
+				## 第一章
+				## 第二章
+				## 第三章
+				### 内容一
+				### 内容二
+				## 谢谢
+				`
+            let html = convert(localStorage.markdown || TPL)
+
+            document.querySelector('.slides').innerHTML = html
+
             Reveal.initialize({
                 controls: true,
                 progress: true,
@@ -188,22 +208,7 @@
                 }]
             });
         }
-
-        function start() {
-            if (localStorage.markdown) {
-                loadMarkdown(localStorage.markdown)
-            } else {
-                loadMarkdown(`
-				# 欢迎来到Easy PPT
-				## 第一章
-				## 第二章
-				## 第三章
-				### 内容一
-				### 内容二
-				## 谢谢
-				`)
-            }
-        }
+        start()
     </script>
 
 </body>
