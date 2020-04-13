@@ -21,6 +21,10 @@
     <!-- Theme used for syntax highlighting of code -->
     <link rel="stylesheet" href="lib/css/monokai.css">
 
+    <link rel="stylesheet" href="css/main.css">
+
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1750999_r25cx8ixxc.css">
+
     <!-- Printing and PDF exports -->
     <script>
         var link = document.createElement('link');
@@ -36,7 +40,45 @@
 </head>
 
 <body>
+    <!-- 操作按钮 -->
+    <div class="control">
+        <span class="iconfont icon-setting"></span>
+    </div>
+    <!-- 操作栏 -->
+    <div class="menu">
+        <span class="iconfont icon-close"></span>
+        <div class="detail">
+            <div class="tab active">
+                <span class="iconfont icon-edit"></span> 内容与编辑
+            </div>
+            <div class="tab ">
+                <span class="iconfont icon-theme"></span> 主题与特效
+            </div>
+            <div class="tab">
+                <span class="iconfont icon-download"></span> 下载PDF
+            </div>
+            <div class="content active">
+                <div class="header">编辑</div>
+                <div class="body editor">
+                    <textarea></textarea>
+                    <div><button class="button-save">保存</button></div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="header">主题</div>
+                <div class="body theme">
+                    <p>主题与特效</p>
+                </div>
+            </div>
+            <div class="content">
+                <div class="header">下载</div>
+                <div class="body download">
+                    <p>下载PDF</p>
+                </div>
+            </div>
+        </div>
 
+    </div>
     <div class="reveal">
 
         <!-- Any section element inside of this container is displayed as a slide -->
@@ -47,169 +89,7 @@
     </div>
 
     <script src="js/reveal.js"></script>
-
-    <!-- <script>
-        // More info https://github.com/hakimel/reveal.js#configuration
-        Reveal.initialize({
-            controls: true,
-            progress: true,
-            center: true,
-            hash: true,
-
-            transition: 'slide', // none/fade/slide/convex/concave/zoom
-
-            // More info https://github.com/hakimel/reveal.js#dependencies
-            dependencies: [{
-                src: 'plugin/markdown/marked.js',
-                condition: function() {
-                    return !!document.querySelector('[data-markdown]');
-                }
-            }, {
-                src: 'plugin/markdown/markdown.js',
-                condition: function() {
-                    return !!document.querySelector('[data-markdown]');
-                }
-            }, {
-                src: 'plugin/highlight/highlight.js'
-            }, {
-                src: 'plugin/search/search.js',
-                async: true
-            }, {
-                src: 'plugin/zoom-js/zoom.js',
-                async: true
-            }, {
-                src: 'plugin/notes/notes.js',
-                async: true
-            }]
-        });
-    </script> -->
-    <script>
-        const isMain = str => (/^#{1,2}(?!#)/).test(str)
-        const isSub = str => (/^#{3}(?!#)/).test(str)
-
-        function convert(raw) {
-            let arr = raw.split(/\n(?=\s*#)/).filter(s => s != '').map(s => s.trim())
-            html = ''
-            for (let i = 0; i < arr.length; i++) {
-                if (arr[i + 1] !== undefined) {
-                    if (isMain(arr[i]) && isMain(arr[i + 1])) {
-                        html += `
-							<section data-markdown>
-							<textarea data-template>
-								${arr[i]}
-							</textarea>
-						</section>
-							`
-                    } else if (isMain(arr[i]) && isSub(arr[i + 1])) {
-                        html += `
-						<section>
-								<section data-markdown>
-							<textarea data-template>
-								${arr[i]}
-							</textarea>
-						</section>
-						`
-                    } else if (isSub(arr[i]) && isSub(arr[i + 1])) {
-                        html += `
-							<section data-markdown>
-						<textarea data-template>
-							${arr[i]}
-						</textarea>
-					</section>
-							`
-                    } else if (isSub(arr[i]) && isMain(arr[i + 1])) {
-                        html += `
-							<section data-markdown>
-							<textarea data-template>
-								${arr[i]}
-							</textarea>
-						</section>
-					</section>
-							`
-                    }
-
-                } else {
-                    if (isMain(arr[i])) {
-                        html += `
-							<section data-markdown>
-						<textarea data-template>
-							${arr[i]}
-						</textarea>
-					</section>`
-                    } else if (isSub(arr[i])) {
-                        html += `
-							<section data-markdown>
-							<textarea data-template>
-								${arr[i]}
-							</textarea>
-						</section>
-					</section>
-							`
-                    }
-                }
-            }
-            return html
-        }
-        // 用户修改时，调用loadMarkdown函数
-        function loadMarkdown(raw) {
-            // 用户修改过后，修改后的内容保存在localStorage中
-            localStorage.markdown = raw
-                // 重新加载,之后调用start函数
-            location.reload()
-                // More info https://github.com/hakimel/reveal.js#configuration
-
-        }
-        // 页面加载时调用start函数
-        function start() {
-            // tpl是默认模板
-            let TPL = `
-				# 欢迎来到 oneSlide
-				## 第一章
-				## 第二章
-				## 第三章
-				### 内容一
-				### 内容二
-				## 谢谢
-				`
-            let html = convert(localStorage.markdown || TPL)
-
-            document.querySelector('.slides').innerHTML = html
-
-            Reveal.initialize({
-                controls: true,
-                progress: true,
-                center: true,
-                hash: true,
-
-                transition: 'slide', // none/fade/slide/convex/concave/zoom
-
-                // More info https://github.com/hakimel/reveal.js#dependencies
-                dependencies: [{
-                    src: 'plugin/markdown/marked.js',
-                    condition: function() {
-                        return !!document.querySelector('[data-markdown]');
-                    }
-                }, {
-                    src: 'plugin/markdown/markdown.js',
-                    condition: function() {
-                        return !!document.querySelector('[data-markdown]');
-                    }
-                }, {
-                    src: 'plugin/highlight/highlight.js'
-                }, {
-                    src: 'plugin/search/search.js',
-                    async: true
-                }, {
-                    src: 'plugin/zoom-js/zoom.js',
-                    async: true
-                }, {
-                    src: 'plugin/notes/notes.js',
-                    async: true
-                }]
-            });
-        }
-        start()
-    </script>
+    <script src="js/main.js"></script>
 
 </body>
 
