@@ -239,7 +239,7 @@ const Print = {
         this.$download.addEventListener('click', () => {
             let $link = document.createElement('a')
             $link.setAttribute('target', '_blank')
-            $link.setAttribute('href', location.href.replace(/#\/.+/, '?print-pdf'))
+            $link.setAttribute('href', location.href.replace(/#\//, '?print-pdf'))
             $link.click()
         })
     },
