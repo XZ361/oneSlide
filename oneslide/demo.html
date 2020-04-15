@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>reveal.js – The HTML Presentation Framework</title>
+    <title>OneSlide – The HTML Presentation Framework</title>
 
     <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
     <meta name="author" content="Hakim El Hattab">
@@ -16,7 +16,7 @@
 
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/reveal.css">
-    <link rel="stylesheet" href="css/theme/blood.css" id="theme">
+    <!-- <link rel="stylesheet" href="css/theme/sky.css" id="theme"> -->
 
     <!-- Theme used for syntax highlighting of code -->
     <link rel="stylesheet" href="lib/css/monokai.css">
@@ -65,9 +65,70 @@
                 </div>
             </div>
             <div class="content">
-                <div class="header">主题</div>
+                <div class="header">主题特效</div>
                 <div class="body theme">
-                    <p>主题与特效</p>
+                    <h5>主题</h5>
+                    <div class="themes">
+                        <!-- 默认被选中主题 -->
+                        <figure data-theme='beige'>
+                            <img src="./img/beige.png" alt="beige">
+                            <figcaption>beige</figcaption>
+                        </figure>
+                        <figure data-theme='black'>
+                            <img src="./img/black.png" alt="black">
+                            <figcaption>black</figcaption>
+                        </figure>
+                        <figure data-theme='blood'>
+                            <img src="./img/blood.png" alt="blood">
+                            <figcaption>blood</figcaption>
+                        </figure>
+                        <figure data-theme='custom'>
+                            <img src="./img/custom.png" alt="custom">
+                            <figcaption>custom</figcaption>
+                        </figure>
+                        <figure data-theme='league'>
+                            <img src="./img/league.png" alt="league">
+                            <figcaption>league</figcaption>
+                        </figure>
+                        <figure data-theme='moon'>
+                            <img src="./img/moon.png" alt="moon">
+                            <figcaption>moon</figcaption>
+                        </figure>
+                        <figure data-theme='night'>
+                            <img src="./img/night.png" alt="night">
+                            <figcaption>night</figcaption>
+                        </figure>
+                        <figure data-theme='serif'>
+                            <img src="./img/serif.png" alt="serif">
+                            <figcaption>serif</figcaption>
+                        </figure>
+                        <figure data-theme='simple'>
+                            <img src="./img/simple.png" alt="simple">
+                            <figcaption>simple</figcaption>
+                        </figure>
+                        <figure data-theme='sky'>
+                            <img src="./img/sky.png" alt="sky">
+                            <figcaption>sky</figcaption>
+                        </figure>
+                        <figure data-theme='solarized'>
+                            <img src="./img/solarized.png" alt="solarized">
+                            <figcaption>solarized</figcaption>
+                        </figure>
+                        <figure data-theme='white'>
+                            <img src="./img/white.png" alt="white">
+                            <figcaption>white</figcaption>
+                        </figure>
+                    </div>
+                    <h5>特效</h5>
+                    <select class="transition">
+                        <!-- 转场特效// none/fade/slide/convex/concave/zoom -->
+                        <option value="slide">滑动</option>
+                        <option value="fade">淡化</option>
+                        <option value="convex">凸出</option>
+                        <option value="concave">凹陷</option>
+                        <option value="zoom">缩放</option>
+                        <option value="none">无</option>
+                    </select>
                 </div>
             </div>
             <div class="content">
