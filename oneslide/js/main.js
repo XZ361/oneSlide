@@ -227,6 +227,36 @@ const Theme = {
 }
 
 
+// 下载pdf功能模块
+const Print = {
+    init() {
+        this.$download = $('.download')
+
+        this.bind()
+        this.start()
+    },
+    bind() {
+        this.$download.addEventListener('click', () => {
+            let $link = document.createElement('a')
+            $link.setAttribute('target', '_blank')
+            $link.setAttribute('href', location.href.replace(/#\/.+/, '?print-pdf'))
+            $link.click()
+        })
+    },
+    start() {
+        let link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        if (window.location.search.match(/print-pdf/gi)) {
+            link.href = 'css/print/pdf.css'
+            window.print()
+        } else {
+            link.href = 'css/print/paper.css'
+        }
+        document.head.appendChild(link);
+    }
+}
+
 // 代表页面的功能
 const App = {
     init() {
@@ -238,5 +268,6 @@ const App = {
 App.init(
     Menu,
     Editor,
-    Theme
+    Theme,
+    Print
 )
