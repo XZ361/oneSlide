@@ -3,7 +3,7 @@ const $$ = s => document.querySelectorAll(s)
 const isMain = str => (/^#{1,2}(?!#)/).test(str)
 const isSub = str => (/^#{3}(?!#)/).test(str)
 const convert = raw => {
-    let arr = raw.split(/\n(?=\s*#)/).filter(s => s != '').map(s => s.trim())
+    let arr = raw.split(/\n(?=\s*#{1,3}[^#])/).filter(s => s != '').map(s => s.trim())
     html = ''
     for (let i = 0; i < arr.length; i++) {
         if (arr[i + 1] !== undefined) {
@@ -138,7 +138,7 @@ const Editor = {
         Reveal.initialize({
             controls: true,
             progress: true,
-            center: true,
+            center: localStorage.align === 'left-top' ? false : true,
             hash: true,
 
             transition: localStorage.transition || 'slide', // none/fade/slide/convex/concave/zoom
@@ -175,6 +175,8 @@ const Theme = {
     init() {
         this.$$figures = $$('.themes figure')
         this.$transition = $('.theme .transition')
+        this.$align = $('.theme .align')
+        this.$reveal = $('.reveal')
 
         this.bind()
         this.loadTheme()
@@ -195,6 +197,11 @@ const Theme = {
             localStorage.transition = this.value
             location.reload()
         }
+        this.$align.onchange = function() {
+            // 将选中的对齐属性保存在本地
+            localStorage.align = this.value
+            location.reload()
+        }
     },
     setTheme(theme) {
         // 将主题存在本地，等待页面刷新时，更换主题
@@ -213,6 +220,9 @@ const Theme = {
             // 建构了类数组对象转化成数组，之后调用数组的find方法过滤出被点击的figure
         Array.from(this.$$figures).find($figure => $figure.dataset.theme === theme).classList.add('select')
         this.$transition.value = localStorage.transition || 'slide'
+        this.$align.value = localStorage.align || 'center'
+
+        this.$reveal.classList.add(this.$align.value)
     }
 }
 
