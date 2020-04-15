@@ -17,6 +17,14 @@ button:hover {
     opacity: 1;
 }
 
+.reveal.left-top section {
+    text-align: left;
+}
+
+.reveal.left-top .slides>section:first-child {
+    text-align: center;
+}
+
 
 /* Control */
 
@@ -181,6 +189,8 @@ button:hover {
     padding: 10px;
 }
 
-.menu .theme .transition {
+.menu .theme .transition,
+.menu .theme .align {
     margin-top: 20px;
+    border-radius: 4px;
 }
