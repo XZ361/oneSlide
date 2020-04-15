@@ -109,75 +109,124 @@ const Menu = {
     }
     // 编辑器模块
 const Editor = {
-        init() {
-            console.log('Editor init...')
-            this.$editInput = $('.editor textarea')
-            this.$saveBtn = $('.editor .button-save')
-            this.$slideContainer = $('.slides')
-                // 第一次加载时，为markdown设置默认值
-            this.markdown = localStorage.markdown || `# one slide`
+    init() {
+        console.log('Editor init...')
+        this.$editInput = $('.editor textarea')
+        this.$saveBtn = $('.editor .button-save')
+        this.$slideContainer = $('.slides')
+            // 第一次加载时，为markdown设置默认值
+        this.markdown = localStorage.markdown || `# one slide`
 
-            this.bind()
-            this.start()
-        },
-        bind() {
-            this.$saveBtn.onclick = () => {
-                // 将用户修改的内容保存在本地中
-                localStorage.markdown = this.$editInput.value
-                    // 用户修改并保存后，页面重新加载
-                location.reload()
-            }
-        },
-        // 页面加载时调用start函数
-        start() {
-            // 将修改后的内容保存在edit输入框中，便于下次浏览查看
-            this.$editInput.value = this.markdown
-                // 将修改后的内容，绑定到对应的dom上渲染
-            this.$slideContainer.innerHTML = convert(this.markdown)
-
-            Reveal.initialize({
-                controls: true,
-                progress: true,
-                center: true,
-                hash: true,
-
-                transition: 'slide', // none/fade/slide/convex/concave/zoom
-
-                // More info https://github.com/hakimel/reveal.js#dependencies
-                dependencies: [{
-                    src: 'plugin/markdown/marked.js',
-                    condition: function() {
-                        return !!document.querySelector('[data-markdown]');
-                    }
-                }, {
-                    src: 'plugin/markdown/markdown.js',
-                    condition: function() {
-                        return !!document.querySelector('[data-markdown]');
-                    }
-                }, {
-                    src: 'plugin/highlight/highlight.js'
-                }, {
-                    src: 'plugin/search/search.js',
-                    async: true
-                }, {
-                    src: 'plugin/zoom-js/zoom.js',
-                    async: true
-                }, {
-                    src: 'plugin/notes/notes.js',
-                    async: true
-                }]
-            });
+        this.bind()
+        this.start()
+    },
+    bind() {
+        this.$saveBtn.onclick = () => {
+            // 将用户修改的内容保存在本地中
+            localStorage.markdown = this.$editInput.value
+                // 用户修改并保存后，页面重新加载
+            location.reload()
         }
+    },
+    // 页面加载时调用start函数
+    start() {
+        // 将修改后的内容保存在edit输入框中，便于下次浏览查看
+        this.$editInput.value = this.markdown
+            // 将修改后的内容，绑定到对应的dom上渲染
+        this.$slideContainer.innerHTML = convert(this.markdown)
+
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: true,
+            hash: true,
+
+            transition: localStorage.transition || 'slide', // none/fade/slide/convex/concave/zoom
+
+            // More info https://github.com/hakimel/reveal.js#dependencies
+            dependencies: [{
+                src: 'plugin/markdown/marked.js',
+                condition: function() {
+                    return !!document.querySelector('[data-markdown]');
+                }
+            }, {
+                src: 'plugin/markdown/markdown.js',
+                condition: function() {
+                    return !!document.querySelector('[data-markdown]');
+                }
+            }, {
+                src: 'plugin/highlight/highlight.js'
+            }, {
+                src: 'plugin/search/search.js',
+                async: true
+            }, {
+                src: 'plugin/zoom-js/zoom.js',
+                async: true
+            }, {
+                src: 'plugin/notes/notes.js',
+                async: true
+            }]
+        });
     }
-    // 代表页面的功能
+}
+
+// 页面主题的功能逻辑
+const Theme = {
+    init() {
+        this.$$figures = $$('.themes figure')
+        this.$transition = $('.theme .transition')
+
+        this.bind()
+        this.loadTheme()
+    },
+    bind() {
+        this.$$figures.forEach($figure => $figure.onclick = () => {
+            // 点击时，将所有的主题做个遍历，去掉选中状态,并给当前被点击的主题加上选中状态
+            this.$$figures.forEach($node => $node.classList.remove('select'))
+            $figure.classList.add('select')
+
+            // 可以通过当前对象的dataset.xxx属性获取到自定义的所有属性;如data-xxx=''
+            this.setTheme($figure.dataset.theme)
+        })
+
+        // 转场特效的功能逻辑代码
+        this.$transition.onchange = function() {
+            // 将选中的专场保存在本地中，页面刷新
+            localStorage.transition = this.value
+            location.reload()
+        }
+    },
+    setTheme(theme) {
+        // 将主题存在本地，等待页面刷新时，更换主题
+        localStorage.theme = theme
+        location.reload()
+    },
+    loadTheme() {
+        let theme = localStorage.theme || 'beige'
+
+        let $link = document.createElement('link')
+        $link.rel = 'stylesheet'
+        $link.href = `css/theme/${theme}.css`
+        document.head.appendChild($link)
+            // $(`select figure[data-theme=${theme}]`)
+            // 找到当前被点击的theme,给他加上select类
+            // 建构了类数组对象转化成数组，之后调用数组的find方法过滤出被点击的figure
+        Array.from(this.$$figures).find($figure => $figure.dataset.theme === theme).classList.add('select')
+        this.$transition.value = localStorage.transition || 'slide'
+    }
+}
+
+
+// 代表页面的功能
 const App = {
     init() {
         [...arguments].forEach(Module => Module.init())
     }
 }
 
-// 页面所有功能的总入口，页面初始化
+// 页面所有功能的总入口，页面初始化,依次加载各个功能模块
 App.init(
     Menu,
-    Editor
+    Editor,
+    Theme
 )
