@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>OneSlide – The HTML Presentation Framework</title>
+    <title>OneSlide——极简 MarkDown PPT</title>
 
     <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
     <meta name="author" content="Hakim El Hattab">
@@ -23,7 +23,7 @@
 
     <link rel="stylesheet" href="css/main.css">
 
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_1750999_r25cx8ixxc.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1750999_bylap2vogpc.css">
 
     <!-- Printing and PDF exports -->
     <!-- <script>
@@ -52,10 +52,17 @@
             <div class="tab download">
                 <span class="iconfont icon-download"></span> 下载PDF
             </div>
+            <div class="tab ">
+                <span class="iconfont icon-speaker"></span> 演讲者模式
+            </div>
             <div class="content active">
                 <div class="header">编辑</div>
                 <div class="body editor">
                     <textarea></textarea>
+                    <div class="uploader">
+                        <input type="file" name="" id="img-uploader" accept="image/*">
+                        <label for="img-uploader">点击上传图片(支持.png、.jpg、.gif,最大2M)</label>
+                    </div>
                     <div><button class="button-save">保存</button></div>
                 </div>
             </div>
@@ -140,6 +147,12 @@
                     <p>下载PDF</p>
                 </div>
             </div>
+            <div class="content">
+                <div class="header">演讲者模式</div>
+                <div class="body speaker">
+                    <p>按 <strong>S</strong> 键，开启演讲者模式</p>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -151,7 +164,7 @@
         </div>
 
     </div>
-
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.5.3/dist/av-min.js"></script>
     <script src="js/reveal.js"></script>
     <script src="js/main.js"></script>
 
