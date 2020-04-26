@@ -149,6 +149,18 @@ button:hover {
     outline: none;
 }
 
+.menu .content [type="file"] {
+    display: none;
+}
+
+.menu .content .uploader {
+    padding: 10px 0;
+}
+
+.menu .content label {
+    cursor: pointer;
+}
+
 .menu .content button {
     margin-top: 16px;
 }
