@@ -107,6 +107,67 @@ const Menu = {
             })
         }
     }
+    // 集成上传文件模块
+const ImgUploader = {
+        init() {
+
+            this.$fileInput = $('#img-uploader')
+            this.$textarea = $('.editor textarea')
+            AV.init({
+                appId: "xl5PtXUU3LluVijMH2eF4X9C-gzGzoHsz",
+                appKey: "hvdyKoPL9MSbM5o2S9WGFTxW",
+                serverURL: "https://xl5ptxuu.lc-cn-n1-shared.com"
+            });
+            this.bind()
+        },
+        bind() {
+            let self = this
+            this.$fileInput.onchange = function() {
+                if (this.files.length > 0) {
+                    let localFile = this.files[0]
+                    console.log(localFile)
+                    if (localFile.size / 1048576 > 2) {
+                        alert('文件不能超过2M')
+                        return
+                    }
+                    // 		上传之前
+                    self.insertText(`![上传中，进度${percent=0}%]()`)
+                    const avFile = new AV.File(encodeURI(localFile.name), localFile);
+
+                    avFile.save({
+                        keepFileName: true,
+                        onprogress: (progress) => {
+                            self.insertText(`![上传中，进度${progress.percent}%]()`)
+                        }
+                    }).then(file => {
+                        console.log('文件保存完成');
+                        console.log(file)
+                            // 	上传完成后
+                        let text = `![${file.attributes.name}}](${file.attributes.url}?imageView2/0/w/800/h/400)`
+                        self.insertText(text)
+
+                    }, (error) => {
+                        // 保存失败，可能是文件无法被读取，或者上传过程中出现问题
+                        console.log(error)
+                    });
+                }
+
+
+            }
+        },
+        insertText(text = '') {
+            let $textarea = this.$textarea
+            let start = $textarea.selectionStart
+            let end = $textarea.selectionEnd
+            let oldText = $textarea.value
+
+            let insertText = text
+
+            $textarea.value = `${oldText.substring(0,start)}${insertText} ${oldText.substring(end)}`
+            $textarea.focus()
+            $textarea.setSelectionRange(start, start + insertText.length)
+        }
+    }
     // 编辑器模块
 const Editor = {
     init() {
@@ -239,7 +300,10 @@ const Print = {
         this.$download.addEventListener('click', () => {
             let $link = document.createElement('a')
             $link.setAttribute('target', '_blank')
-            $link.setAttribute('href', location.href.replace(/#\//, '?print-pdf'))
+                // +表示出现1次或多次，这样会导致刚进来时下载pdf无效
+                // $link.setAttribute('href', location.href.replace(/#\/.+/, '?print-pdf'))
+                // *表示0次或多次
+            $link.setAttribute('href', location.href.replace(/#\/.*/, '?print-pdf'))
             $link.click()
         })
     },
@@ -267,6 +331,7 @@ const App = {
 // 页面所有功能的总入口，页面初始化,依次加载各个功能模块
 App.init(
     Menu,
+    ImgUploader,
     Editor,
     Theme,
     Print
