@@ -23,7 +23,7 @@
 
     <link rel="stylesheet" href="css/main.css">
 
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_1750999_bylap2vogpc.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1750999_9giezmebkbn.css">
 
     <!-- Printing and PDF exports -->
     <!-- <script>
@@ -37,7 +37,7 @@
 <body>
     <!-- 操作按钮 -->
     <div class="control">
-        <span class="iconfont icon-setting"></span>
+        <span class="iconfont icon-cuozuo"></span>
     </div>
     <!-- 操作栏 -->
     <div class="menu">
@@ -56,9 +56,10 @@
                 <span class="iconfont icon-speaker"></span> 演讲者模式
             </div>
             <div class="content active">
-                <div class="header">编辑</div>
+                <div class="header">编辑内容</div>
                 <div class="body editor">
-                    <textarea></textarea>
+                    <textarea>
+                    </textarea>
                     <div class="uploader">
                         <input type="file" name="" id="img-uploader" accept="image/*">
                         <label for="img-uploader">点击上传图片(支持.png、.jpg、.gif,最大2M)</label>
@@ -73,6 +74,10 @@
                     <h5>主题</h5>
                     <div class="themes">
                         <!-- 默认被选中主题 -->
+                        <figure data-theme='sky'>
+                            <img src="./img/sky.png" alt="sky">
+                            <figcaption>sky</figcaption>
+                        </figure>
                         <figure data-theme='beige'>
                             <img src="./img/beige.png" alt="beige">
                             <figcaption>beige</figcaption>
@@ -108,10 +113,6 @@
                         <figure data-theme='simple'>
                             <img src="./img/simple.png" alt="simple">
                             <figcaption>simple</figcaption>
-                        </figure>
-                        <figure data-theme='sky'>
-                            <img src="./img/sky.png" alt="sky">
-                            <figcaption>sky</figcaption>
                         </figure>
                         <figure data-theme='solarized'>
                             <img src="./img/solarized.png" alt="solarized">

@@ -74,7 +74,7 @@ const Menu = {
         init() {
             console.log('Menu init...')
                 // 打开菜单栏按钮
-            this.$settintIcon = $('.control .icon-setting')
+            this.$settintIcon = $('.control .icon-cuozuo')
                 // 菜单栏功能
             this.$menu = $('.menu')
                 // 菜单栏关闭按钮
@@ -176,7 +176,7 @@ const Editor = {
         this.$saveBtn = $('.editor .button-save')
         this.$slideContainer = $('.slides')
             // 第一次加载时，为markdown设置默认值
-        this.markdown = localStorage.markdown || `# one slide`
+        this.markdown = localStorage.markdown || `# Hello easy PPT`
 
         this.bind()
         this.start()
@@ -270,7 +270,7 @@ const Theme = {
         location.reload()
     },
     loadTheme() {
-        let theme = localStorage.theme || 'beige'
+        let theme = localStorage.theme || 'sky'
 
         let $link = document.createElement('link')
         $link.rel = 'stylesheet'
